@@ -1,13 +1,10 @@
 <?php
 include("lib/lib-bot.php");
 
-
 $bot_token = "";     // replace with your bot's API token
 $bot_username = ""; //don't use @ -> example: "guxfiz_bot"
 
-
 $tokensk = '';  // replace with ur token of ChatGPT 'sk-########################'
-
 
 // Create Bot object
 $bot = new Bot($bot_token, $bot_username);
@@ -32,7 +29,6 @@ function apichatgpt($url, $Headers, $prompt){
   curl_setopt($curl, CURLOPT_HTTPHEADER, $Headers);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
   return curl_exec($curl); 
-
 }
 
 // Load update from data
@@ -44,7 +40,6 @@ if ($update->message) {
         $bot->send_message($update->message->chat->id, "Hola, Bienvenido..  Mira esto!!");
         $bot->send_photo($update->message->chat->id, "https://dam.esquirelat.com/wp-content/uploads/2022/09/10-datos-curiosos-que-debes-saber-sobre-Mario-Bros-1024x576.jpg");
     }else if(strpos($ezmessage, "!e") === 0){
-
       $response = apichatgpt(
         'https://api.openai.com/v1/images/generations',
         array(
@@ -56,11 +51,10 @@ if ($update->message) {
           'n' => 1,
           'size' => '1024x1024',
         ))
-        );
+      );
+      GetInf($response,  '"message": "', '",') == false ? '' : $bot->send_message($update->message->chat->id, 'Su solicitud fue rechazada como resultado de nuestro sistema de seguridad/Su aviso puede contener texto que no está permitido por nuestro sistema de seguridad., "", [], false, false, false, $update->message->id') ;
 
-      GetInf($response,  '"message": "', '",') == false ? '' : $bot->send_message($update->message->chat->id, 'Su solicitud fue rechazada como resultado de nuestro sistema de seguridad/Su aviso puede contener texto que no está permitido por nuestro sistema de seguridad.') ;
-
-      $bot->send_photo($update->message->chat->id, GetInf($response,  '"url": "', '"'));
+      $bot->send_photo($update->message->chat->id, GetInf($response,  '"url": "', '"'), "", "", [], false, false, $update->message->id);
 
     }else if(strpos($ezmessage, "!a") === 0){
 
@@ -75,13 +69,12 @@ if ($update->message) {
           'prompt' => $ezmessage,
           'temperature' => 0.5,
         ))
-        );
-
+      );
       $abcremove = array('\n', $ezmessage);
-      $bot->send_message($update->message->chat->id, str_replace($abcremove, ''."\n".'', GetInf($response,  '"text":"', '",')));
+
+      $bot->send_message($update->message->chat->id, str_replace($abcremove, ''."\n".'', GetInf($response,  '"text":"', '",')), "", [], false, false, false, $update->message->id);
       
     }else if(strpos($ezmessage, "!i") === 0){
-
       $response = apichatgpt(
         'https://api.openai.com/v1/edits',
         array(
@@ -93,17 +86,13 @@ if ($update->message) {
           'input' => $ezmessage,
           'instruction' => 'responde cómo un profesor de la universidad',
         ))
-        );
-      
-
+      );
       $abcremove = array('\n', $ezmessage);
 
-      $bot->send_message($update->message->chat->id, str_replace($abcremove, ''."\n".'', GetInf($response,  '"text":"', '",')));
+      $bot->send_message($update->message->chat->id, str_replace($abcremove, ''."\n".'', GetInf($response,  '"text":"', '",')), "", [], false, false, false, $update->message->id);
       
     }else if($ezmessage == "!hack"){
-
-        $bot->send_message($update->message->chat->id, "aea");
-        
+      $bot->send_message($update->message->chat->id, "aea", "", [], false, false, false, $update->message->id);  
     }
 /*
       $letraAleatoria = chr(rand(ord('a'), ord('z')));
