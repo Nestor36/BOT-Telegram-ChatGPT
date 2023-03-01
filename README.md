@@ -3,6 +3,7 @@
 <h1 align="center">Preview</h1>
 ![](img/preview01.png)
 ![](img/preview02.png)
+<img src="img/preview01.png">
 <p align="center">
 Realizado en PHP. Código totalmente creado por mí, no brindo soporte.. idk
 </p>
